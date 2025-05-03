@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pagamento Pix - Vinklo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 30px 20px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      max-width: 420px;
+      width: 100%;
+    }
+
+    h2 {
+      color: #333;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .countdown {
+      font-size: 18px;
+      font-weight: bold;
+      padding: 10px 16px;
+      border-radius: 8px;
+      display: inline-block;
+      color: white;
+      background-color: #28a745;
+      margin-bottom: 20px;
+    }
+
+    .pix-code {
+      margin-top: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+      background-color: #38c172;
+      color: white;
+      text-transform: uppercase;
+      font-weight: bold;
+      border: none;
+      padding: 12px 20px;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      width: 100%;
+    }
+
+    .copy-btn:hover {
+      background-color: #2fa360;
+      transform: scale(1.02);
+    }
+
+    .pix-logo-bottom {
+      width: 90px;
+      margin-top: 20px;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .purchase-info {
+      text-align: left;
+      margin-top: 30px;
+    }
+
+    .purchase-info h3 {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .purchase-info .price {
+      color: #28a745;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .purchase-info img {
+      width: 36px;
+      margin-bottom: 20px;
+    }
+
+    .instructions h4 {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .instructions ol {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .instructions li {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .instructions li::before {
+      content: counter(step);
+      counter-increment: step;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: #002d5f;
+      color: white;
+      text-align: center;
+      line-height: 24px;
+      font-weight: bold;
+      margin-right: 10px;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .instructions {
+      counter-reset: step;
+    }
+
+    /* Botão de Suporte */
+    .support-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25d366;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      z-index: 999;
+      text-decoration: none;
+    }
+
+    .support-button img {
+      width: 20px;
+      height: 20px;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px 15px;
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+
+      .countdown {
+        font-size: 16px;
+        padding: 8px 14px;
+      }
+
+      input {
+        font-size: 15px;
+      }
+
+      .copy-btn {
+        font-size: 13px;
+        padding: 10px;
+      }
+
+      .pix-logo-bottom {
+        width: 80px;
+      }
+
+      .instructions li {
+        font-size: 13px;
+      }
+
+      .support-button {
+        padding: 10px 16px;
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="pngwing.com.png" alt="Logo TikTok" style="width: 70px;" />
+    <h2>Falta pouco! Para finalizar a compra, escaneie o QR Code abaixo.</h2>
+
+    <div class="countdown">
+      Código expira em: <span id="timer">24:00:00</span>
+    </div>
+
+    <img src="qrcode-pix.png" alt="QR Code Pix" width="250" height="250" style="margin: 0 auto 20px;" />
+
+    <div class="pix-code">
+      <p>Se preferir, pague com a opção <strong>PIX Copia e Cola:</strong></p>
+      <input type="text" value="00020126430014BR.GOV.BCB.PIX0121lojasvinklo@gmail.com520400005303986540519.905802BR5914Metodos TikTok6012Laranjal Pta62240520METODOTTK202504280006304F6C6" readonly />
+      <button class="copy-btn" onclick="copyCode()">
+        <span>📋</span>
+        <span>COPIAR CÓDIGO</span>
+      </button>
+
+      <img src="pix.PNG" alt="Logo Pix" class="pix-logo-bottom" />
+    </div>
+
+    <div class="purchase-info">
+      <h3>Detalhes da compra</h3>
+      <p class="price">Valor total: <span>R$ 19,90</span></p>
+      <img src="pngwing.com.png" alt="Logo TikTok" />
+
+      <div class="instructions">
+        <h4>Instruções para pagamento</h4>
+        <ol>
+          <li>Abra o app do seu banco e entre no ambiente Pix</li>
+          <li>Escolha Pagar com QR Code e aponte a câmera para o código ao lado.</li>
+          <li>Confirme as informações e finalize sua compra.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botão de suporte flutuante -->
+  <a class="support-button" href="https://wa.me/5511999999999" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp" />
+    Suporte
+  </a>
+
+  <script>
+    function copyCode() {
+      const input = document.querySelector("input");
+      input.select();
+      document.execCommand("copy");
+    }
+
+    const timerEl = document.getElementById("timer");
+    let remaining = 24 * 60 * 60;
+
+    function updateTimer() {
+      const hours = String(Math.floor(remaining / 3600)).padStart(2, '0');
+      const minutes = String(Math.floor((remaining % 3600) / 60)).padStart(2, '0');
+      const seconds = String(remaining % 60).padStart(2, '0');
+
+      timerEl.textContent = `${hours}:${minutes}:${seconds}`;
+
+      const container = timerEl.parentElement;
+      if (remaining <= 600) {
+        container.style.backgroundColor = "#dc3545";
+      } else if (remaining <= 3600) {
+        container.style.backgroundColor = "#fd7e14";
+      } else {
+        container.style.backgroundColor = "#28a745";
+      }
+
+      if (remaining > 0) {
+        remaining--;
+      } else {
+        clearInterval(interval);
+        timerEl.textContent = "00:00:00";
+        container.style.backgroundColor = "#6c757d";
+      }
+    }
+
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+  </script>
+</body>
+</html>
